@@ -14,11 +14,10 @@ class CSVController extends Controller
 
     public function save(Request $request)
     {
-        $startTime = microtime(true);
+
+
         $filePath = $request->file('csv')->getRealPath();
-
         $file = fopen($filePath, 'r');
-
         $header = fgetcsv($file); // Read the first row as the header
 
         $shifts = [];
@@ -30,11 +29,12 @@ class CSVController extends Controller
         }
         $shifts = LazyCollection::make($shifts);
         fclose($file);
+
         $curencies = config('curencies');
         $groupedData = $shifts->groupBy(function ($item) {
             return $item['worker'] . '-' . $item['company'];
         });
-          $curencies = config('curencies');
+
         $shifts = collect();
          $groupedData->eager()->each(function ($items) use ($curencies ,&$shifts) {
             $user = User::query()->updateOrCreate([
@@ -67,14 +67,7 @@ class CSVController extends Controller
                     Shift::query()->upsert($shift->toArray() , ['user_id' , 'date']);
          });
 
-
-
-
-
-
-        $endTime = microtime(true);
-        $executionTime = $endTime - $startTime;
-        dd("Query took " . $executionTime . " seconds to execute.");
+         return response()->json(['success' => 'true'] ,  200);
 
 }
 }
