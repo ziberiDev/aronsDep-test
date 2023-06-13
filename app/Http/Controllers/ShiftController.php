@@ -54,4 +54,12 @@ class ShiftController extends Controller
 
         return redirect()->route('user.show', ['id' => $id->user_id])->with('success', 'Shift updated');
     }
+
+
+    public function destroy(Shift $id)
+    {
+        $id->delete();
+        return redirect()->route('user.show', ['id' => $id->user_id])->with('success', 'Shift deleted');
+
+    }
 }
