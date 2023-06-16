@@ -23,9 +23,13 @@ Route::get('/', function (Request $request) {
 });
 
 Route::get('/user/{id}', [\App\Http\Controllers\ShiftController::class , 'show'])->name('user.show');
+
+Route::get('/user/{id}/shift/create' , [\App\Http\Controllers\ShiftController::class , 'create'])->name('shift.create');
+Route::post('/user/{id}/shift/save' , [\App\Http\Controllers\ShiftController::class , 'save'])->name('shift.save');
+
 Route::get('/shift/{id}/edit', function (Shift $id) {
-    $users = User::all();
-    return view('shifts.edit', compact('id' , 'users'));
+   $id = $id->load('user');
+    return view('shifts.edit', compact('id' ));
 })->name('shift.edit');
 Route::put('/shift/{id}/update', [\App\Http\Controllers\ShiftController::class , 'update'])->name('shift.update');
 Route::get('/user/{id}/delete', [\App\Http\Controllers\ShiftController::class , 'destroy'])->name('shift.delete');

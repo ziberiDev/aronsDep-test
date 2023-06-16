@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateShiftRequest;
 use App\Http\Requests\UpdateShiftRequest;
 use App\Models\Shift;
 use App\Models\User;
@@ -9,6 +10,38 @@ use Illuminate\Http\Request;
 
 class ShiftController extends Controller
 {
+
+    public function create(User $id)
+    {
+        return view('shifts.create' , compact('id'));
+    }
+
+    public function save(User $id , CreateShiftRequest $request)
+    {
+        $validated = $request->validated();
+
+        $date = $validated['date'];
+//        $onDateShifts = $id->load([
+//            'shifts' => function ($query) use ($date) {
+//                $query->where('date', $date);
+//        }
+//        ]);
+
+       $user = $id->shifts()->create(
+           [
+               "date" => $validated['date'],
+               "hours" => $validated['hours'],
+               "rate_per_hour" => $validated['rate_per_hour'],
+               "taxable" => $validated['taxable'],
+               "status" => $validated['status'],
+               "shift_type" => $validated['shift_type'],
+               "paid_at" => $validated['paid_at'] !== null ?: '',
+               "total_pay" => $validated['rate_per_hour'] * $validated['hours']
+           ]
+        );
+
+    return redirect()->route('user.show', ['id' => $id->id])->with('success', 'Shift created');
+    }
     public function show(User $id, Request $request)
     {
         $validated = $request->validate(['filter' => ['nullable', 'numeric']]);
@@ -29,17 +62,9 @@ class ShiftController extends Controller
 
         return view('users.show', compact('user', 'filter', 'completedShifts'));
     }
-
-
-//    public function edit(Shift $id ,  Request $request)
-//    {
-//
-//    }
-
     public function update(Shift $id, UpdateShiftRequest $request)
     {
         $validated = $request->validated();
-//        $id->update($validated);
         $id->update(
             [
                 "date" => $validated['date'],
@@ -51,15 +76,12 @@ class ShiftController extends Controller
                 "paid_at" => $validated['paid_at'] ?? ''
             ]
         );
-
         return redirect()->route('user.show', ['id' => $id->user_id])->with('success', 'Shift updated');
     }
-
 
     public function destroy(Shift $id)
     {
         $id->delete();
         return redirect()->route('user.show', ['id' => $id->user_id])->with('success', 'Shift deleted');
-
     }
 }
