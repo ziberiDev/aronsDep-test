@@ -39,6 +39,7 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
+                <th scope="col">Date</th>
                 <th scope="col">Hours</th>
                 <th scope="col">Rate per Hour</th>
                 <th scope="col">Taxable</th>
@@ -55,6 +56,7 @@
 
                 <tr>
                     <th scope="row">{{$shift->id}}</th>
+                    <td>{{$shift->date}}</td>
                     <td>{{$shift->hours}}</td>
                     <td>{{$shift->rate_per_hour}}</td>
                     <td>{{$shift->taxable}}</td>
@@ -84,6 +86,7 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
+                <th scope="col">Date</th>
                 <th scope="col">Hours</th>
                 <th scope="col">Rate per Hour</th>
                 <th scope="col">Taxable</th>
@@ -101,6 +104,7 @@
 
                 <tr>
                     <th scope="row">{{$shift->id}}</th>
+                    <td>{{$shift->date}}</td>
                     <td>{{$shift->hours}}</td>
                     <td>{{$shift->rate_per_hour}}</td>
                     <td>{{$shift->taxable}}</td>

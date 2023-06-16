@@ -44,16 +44,15 @@ class CSVController extends Controller
             ]);
 
             foreach ($items as $shift) {
-                $shift['total_pay'] = ((int)$shift['hours'] * (float)str_replace(
-                        $curencies,
-                        '',
-                        $shift['rate_per_hour']
-                    ));
+                unset($shift['worker']);
+                unset($shift['company']);
                 $shift['rate_per_hour'] = str_replace(
                     $curencies,
                     '',
                     $shift['rate_per_hour']
                 );
+                $shift['total_pay'] = ((int)$shift['hours'] * (float) $shift['rate_per_hour']);
+
                 $shift['user_id'] = $user->id;
                 $shift['created_at'] = now();
                 $shift['updated_at'] = now();

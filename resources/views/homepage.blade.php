@@ -40,7 +40,9 @@
                     <th scope="row">{{$user->id}}</th>
                     <td>{{$user->worker}}</td>
                     <td>{{$user->company}}</td>
-                    <td><a href="{{route('user.show' , ['id' => $user->id])}}" class="btn btn-secondary">view</a></td>
+                    <td><a href="{{route('user.show' , ['id' => $user->id])}}" class="btn btn-info">view</a>
+                        <a href="{{route('shift.create' , ['id' => $user->id])}}" class="btn btn-secondary">create shift</a>
+                    </td>
                 </tr>
 
 

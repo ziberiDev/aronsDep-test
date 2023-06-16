@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-6 mx-auto mt-5">
 
-            <h3>Edit Shift for {{$id->worker}}@ {{ $id->company }}</h3>
+            <h3>Edit Shift for {{$id->user->worker}}@ {{ $id->user->company }}</h3>
             <form method="POST"  action="{{route('shift.update' , ['id' => $id->id])}}">
                 @method('PUT')
                 @csrf
@@ -28,7 +28,7 @@
 {{--                </div>--}}
                 <div class="form-group">
                     <label for="company">Company</label>
-                    <input disabled type="text" class="form-control" id="company" value="{{$id->company}}">
+                    <input disabled type="text" class="form-control" id="company" value="{{$id->user->company}}">
 
                 </div>
                 <div class="form-group">
@@ -58,10 +58,9 @@
                 <div class="form-group">
                     <label for="status">Status</label>
                     <select class="form-control" name="status" id="status">
-                        <option @selected($id->status == 'Complete') value="Complete">Complete</option>
-                        <option @selected($id->status == 'Failed') value="Failed">Failed</option>
-                        <option @selected($id->status == 'Pending') value="Pending">Pending</option>
-                        <option @selected($id->status == 'Processing') value="Processing">Processing</option>
+                        @foreach(\App\Enums\ShiftsStatus::cases() as $status)
+                        <option @selected($id->status == $status) value="{{$status}}">{{$status}}</option>
+                        @endforeach
                     </select>
                     @error('status')
                     <p class="alert alert-danger">{{ $message }}</p>
@@ -70,9 +69,9 @@
                 <div class="form-group">
                     <label for="shift_type">Shift Type</label>
                     <select class="form-control" name="shift_type" id="shift_type">
-                        <option @selected($id->status == 'Night') value="Night">Night</option>
-                        <option @selected($id->status == 'Day') value="Day">Day</option>
-                        <option @selected($id->status == 'Holiday') value="Holiday">Holiday</option>
+                        @foreach(\App\Enums\ShiftType::cases() as $type)
+                            <option @selected($id->shift_type == $type) value="{{$type}}">{{$type}}</option>
+                        @endforeach
                     </select>
                     @error('shift_type')
                     <p class="alert alert-danger">{{ $message }}</p>

@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('date')->index();
             $table->foreignIdFor(\App\Models\User::class);
-            $table->string('worker');
-            $table->string('company');
+//            $table->string('worker');
+//            $table->string('company');
             $table->integer('hours');
             $table->string('rate_per_hour');
             $table->string('taxable');
